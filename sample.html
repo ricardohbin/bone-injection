@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Example</title>
+        <script src="lib/underscore.js"></script>
+        <script src="lib/backbone.js"></script>
+        <script src="src/bone_injection.js"></script>
+    </head>
+    <body>
+        <script>
+            (function (Backbone, _) {
+                var Model = Backbone.Model.extend({
+                    initialize: function (a, b) {
+                        console.log(this.__injections__.Xiaaas.ok);
+                    },
+                    foo: function () {
+                        console.log( "bar");
+                    }
+                });
+
+                var Xis = { ok: 1 };
+                var Xis2 = { ok: 10};
+                var Gogo = function () { return function () { return 2 } };
+
+                var ModelInjection = new BoneInjection(Model, [{'Xiaaas': Xis}, {'Gogo': new Gogo()}]);
+                
+                var model = new ModelInjection({a: 1}, 'aaaaaa');
+
+                var ModelInjection2 = new BoneInjection(Model, [{'Xiaaas': Xis2}] );
+
+                var model2 = new ModelInjection2();
+
+            }(Backbone, _));
+        </script>
+    </body>
+</html>
