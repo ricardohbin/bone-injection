@@ -11,17 +11,17 @@ With BoneInjection you can pass an array of dependencies to a new object, and th
 This is helpful to avoid global components and share common services between your views, model, routers and collection (ie: socket.io, event aggregators, template engines, etc), plus all other advantages of using dependency injectons.
 
 ## How it works
-BoneInjectior function intercepts the prototype initializer of the object, decorate it, and return this object decoraded. Then it restore the original state of initializer to keep the Backbone object native implementations intact.
+BoneInjection function intercepts the prototype initializer of the object, decorate it, and return this object decoraded. BTW, the original state of Backbone object's initializer keeps intact after the decorator.
 
 ## Usage
 
 To use BoneInjection just call its passing as arguments
 - Object -> Backbone Object (View, Model, Collection or Router)
 - Array({label: obj}, ...)  -> An array of dependencies to be injected. The label is the reference inside the __injector__
-- [attributes] -> The attributes used in the native Backbone Object constructor.
-- [options] -> The optional parameters used in native Backbone Object constructor.
+- [attributes] -> The same attributes used in the native Backbone Object constructor.
+- [options] -> The same optional parameters used in native Backbone Object constructor.
 
-Im next example, its possible to see the versality of injecting objects inside the Backbone objects. 
+In this example, its possible to see the versality of injecting objects inside the Backbone objects.
 
 ```javascript
 (function (Backbone, _) {
