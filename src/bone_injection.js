@@ -1,6 +1,6 @@
 (function (Backbone, _) {
     function BoneInjection(obj, dependencies) {
-        var oldInitializer = obj.prototype.initialize;
+        var objInstance, oldInitializer = obj.prototype.initialize;
 
         obj.prototype.initialize = function () {
             this.__injections__ = {};
@@ -12,7 +12,9 @@
             }, this);
             oldInitializer.apply(this, arguments);
         }
-        return obj;
+        objInstance = new obj;
+        obj.prototype.initialize = oldInitializer;
+        return objInstance;
     }
     window.BoneInjection = BoneInjection;
 }(window.Backbone, window._));	
