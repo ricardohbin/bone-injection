@@ -3,30 +3,79 @@
     <head>
         <title>Example</title>
         <script src="lib/underscore.js"></script>
+        <script src="lib/zepto.js"></script>
         <script src="lib/backbone.js"></script>
+        <script src="lib/handlebars.js"></script>
         <script src="src/bone_injection.js"></script>
     </head>
-    <body>
+    <body>        
+        <div id="someView"></div>
+        <div id="otherView"></div>
+        <script id="someViewTemplate" type="text/template">
+            <h1> <%= name %> </h1>
+        </script>
+        <script id="otherViewTemplate" type="text/template">
+            <h2> Hello, {{ name }}. I have listen to it. </h2>
+        </script>
+
         <script>
             (function (Backbone, _) {
-                var Model = Backbone.Model.extend({
-                    initialize: function (a, b) {
-                        console.log(this.__injections__.Xiaaas.ok);
-                    },
-                    foo: function () {
-                        console.log( "bar");
+                var Person, SomeView, OtherView, EventObserver, Compiler, OtherCompiler, VendorObject, person, someview, otherview;
+
+                Person = Backbone.Model.extend({
+                    getFullName: function () {
+                        return this.__injections__.vendor.register(this.get("name"), this.get("lastName"));
                     }
                 });
 
-                var Xis = { ok: 1 };
-                var Xis2 = { ok: 10};
-                var Gogo = function () { return function () { return 2 } };
+                SomeView = Backbone.View.extend({
+                    render: function () {
+                        var fullname = this.model.getFullName();
+                        this.$el.html(this.__injections__.compiler({
+                            name: fullname
+                        }));
+                        this.__injections__.vent.trigger("update", fullname);
+                        return this;
+                    }
+                });
 
-                var ModelInjection = new BoneInjection(Model, [{'Xiaaas': Xis}, {'Gogo': new Gogo()}]);
+                OtherView = Backbone.View.extend({
+                    initialize: function () {
+                        this.__injections__.vent.on("update", this.render, this);
+                    },
+                    render: function (fullname) {
+                        this.$el.html(this.__injections__.compiler({
+                            name: fullname
+                        }));
+
+                        return this;
+                    }
+                });
                 
+                EventObserver = _.clone(Backbone.Events);
+                Compiler = _.template($("#someViewTemplate").html());
+                OtherCompiler = Handlebars.compile($("#otherViewTemplate").html());
+                VendorObject = function () {
+                    return {
+                        register: function (firstName, lastName) {
+                            return String(firstName + " " + lastName).toUpperCase();
+                        }
+                    }
+                }
 
-                var ModelInjection2 = new BoneInjection(Model, [{'Xiaaas': Xis2}] );
+                person = BoneInjection(Person, [{'vendor': new VendorObject}], {
+                    name: "Foo", lastName: "Bar"
+                });
 
+                someview = BoneInjection(SomeView, [{'vent': EventObserver}, {'compiler': Compiler}], {
+                    model: person, el: $("#someView") 
+                });
+
+                otherview = BoneInjection(OtherView, [{'vent': EventObserver}, {'compiler': OtherCompiler}], {
+                    el: $("#otherView")
+                });
+
+                someview.render();
 
             }(Backbone, _));
         </script>
