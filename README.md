@@ -33,6 +33,8 @@ In this example, its possible to see the versality of injecting objects inside t
     <h2> Hello, {{ name }}. I have listen to it. </h2>
 </script>
 
+---
+
 ```javascript
 (function (Backbone, _) {
     var Person, SomeView, OtherView, EventObserver, Compiler, OtherCompiler, VendorObject, person, someview, otherview;
