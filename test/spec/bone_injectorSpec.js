@@ -1,4 +1,4 @@
-describe("BoneInjector", function () {
+describe("bone-injection", function () {
     var mockedBackbone, fakeInitialize;
     beforeEach(function () {
         mockedBackbone = function (attributes, options) {

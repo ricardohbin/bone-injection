@@ -15,13 +15,23 @@ BoneInjection function intercepts the prototype initializer of the object, decor
 
 ## Usage
 
-To use BoneInjection just call its passing as arguments
+To use BoneInjection just call it passing as arguments
 - Object -> Backbone Object (View, Model, Collection or Router)
 - Array({label: obj}, ...)  -> An array of dependencies to be injected. The label is the reference inside the __injector__
 - [attributes] -> The same attributes used in the native Backbone Object constructor.
 - [options] -> The same optional parameters used in native Backbone Object constructor.
 
 In this example, its possible to see the versality of injecting objects inside the Backbone objects.
+
+```html
+<div id="someView"></div>
+<div id="otherView"></div>
+<script id="someViewTemplate" type="text/template">
+    <h1> <%= name %> </h1>
+</script>
+<script id="otherViewTemplate" type="text/template">
+    <h2> Hello, {{ name }}. I have listen to it. </h2>
+</script>
 
 ```javascript
 (function (Backbone, _) {
