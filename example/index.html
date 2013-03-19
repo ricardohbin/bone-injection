@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Example</title>
+    </head>
+    <body>        
+        <div id="someView"></div>
+        <div id="otherView"></div>
+
+        <script id="someViewTemplate" type="text/template">
+            <h1> <%= name %> </h1>
+        </script>
+        
+        <script id="otherViewTemplate" type="text/template">
+            <h2> Hello, {{ name }}. I have listen to it. </h2>
+        </script>
+
+        <script src="../lib/underscore.js"></script>
+        <script src="../lib/zepto.js"></script>
+        <script src="../lib/backbone.js"></script>
+        <script src="../lib/handlebars.js"></script>
+        <script src="../src/bone_injection.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/vendors.js"></script>
+
+        <script>
+            (function (Backbone, _, App) {
+                var person, someview, otherview;
+
+                person = BoneInjection(App.Person, [{'vendor': new VendorObject}], {
+                    name: "Foo", lastName: "Bar"
+                });
+
+                someview = BoneInjection(App.SomeView, [{'vent': EventObserver}, {'compiler': Compiler($("#someViewTemplate"))}], {
+                    model: person, el: $("#someView") 
+                });
+
+                otherview = BoneInjection(App.OtherView, [{'vent': EventObserver}, {'compiler': OtherCompiler($("#otherViewTemplate"))}], {
+                    el: $("#otherView")
+                });
+
+                someview.render();
+
+            }(Backbone, _, App));
+        </script>
+    </body>
+</html>

@@ -6,12 +6,15 @@ A simple dependency injector to Backbone objects
 ## Getting Started
 Passing external objects to Backbone objects as parameters can be very repeteadly. You will need to set it in each initializer and pass in every new instance.
 
-With BoneInjection you can pass an array of dependencies to a new object, and them will be injected inside the Backbone instance, under the __injections__ attribute.
+With BoneInjection you can pass an array of dependencies to a object, and them will be injected inside a new Backbone instance, under the __injections__ namespace.
 
 This is helpful to avoid global components and share common services between your views, model, routers and collection (ie: socket.io, event aggregators, template engines, etc), plus all other advantages of using dependency injectons.
 
 ## How it works
 BoneInjection function intercepts the prototype initializer of the object, decorate it, and return this object decoraded. BTW, the original state of Backbone object's initializer keeps intact after the decorator.
+
+## Examples
+See the __example__ folder to see its full usage, including external javascript files, unit tests, mocks, etc.
 
 ## Usage
 
@@ -98,3 +101,5 @@ In this example, its possible to see the versality of injecting objects inside t
 
 }(Backbone, _));
 ```
+
+
